@@ -1,13 +1,11 @@
 #include"Class_Dial.hpp"
-
-
 bool Button_Status(){
   if(M5Dial.BtnA.wasPressed()){
-    return true;
+    return BUTTON_PRESSED;
   }
-  return false ;
+  return BUTTON_NOT_PRESSED ;
 }
-void Vayve_Dial::Check_Update_Regen_Values(M5Dial_Display_Upddate &Display_Structure){
+void Vayve_Dial::Check_Update_Regen_Values(M5Dial_Display_Upddate_Regen &Display_Structure){
   static uint8_t button_count=0;
   if(Button_Status()){
     button_count++;
