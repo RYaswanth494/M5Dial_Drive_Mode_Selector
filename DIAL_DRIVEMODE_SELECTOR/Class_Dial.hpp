@@ -17,8 +17,9 @@ enum GEAR_MODE{
   SPORT_MODE
 };
 enum ENCODER_DIRECTION{
-  CLOCK_WISE=1,
-  COUNTER_CLOCK_WISE=-1
+  IGNORE,
+  CLOCK_WISE,
+  COUNTER_CLOCK_WISE
 };
 typedef struct M5Dial_Display_Upddate_Regen{
   uint8_t x_cordinate;
@@ -31,7 +32,7 @@ typedef struct M5Dial_Display_Upddate_GearMode{
   uint8_t x_cordinate;
   uint8_t y_cordinate;
   char gear_mode_character;
-  uint8_t requested_gear_mode;
+  uint8_t gear_mode;
   uint8_t character_size;
   uint16_t Regen_char_colour;
   uint8_t swap_D_S:2;
