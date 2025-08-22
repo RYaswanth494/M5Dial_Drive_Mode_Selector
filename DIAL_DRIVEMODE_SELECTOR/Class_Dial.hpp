@@ -36,7 +36,7 @@ typedef struct M5Dial_Display_Upddate_GearMode{
   uint8_t character_size;
   uint16_t Regen_char_colour;
   uint8_t swap_D_S:2;
-  uint8_t encoder_direction:1;
+  uint8_t encoder_direction:2;
 };
 class Vayve_Dial{
 public:

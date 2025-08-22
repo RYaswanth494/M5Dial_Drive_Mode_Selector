@@ -1,6 +1,6 @@
 #include"Class_Dial.hpp"
 #include"Images_Array.hpp"
-int radius_of_cursor = 5;
+int radius_of_cursor = 4;
         #define X_COORDINATE_CUR_MODE_CHAR  103
         #define Y_COORDINATE_CUR_MODE_CHAR  100
 
@@ -109,18 +109,25 @@ void remove_cursor_from_prev_position(){
 }
 void update_gear_charactor_color(uint8_t x,uint8_t y,char c,uint16_t colour){
         M5Dial.Display.setTextColor(colour);
-        M5Dial.Display.setTextSize(4);
+        M5Dial.Display.setTextSize(4.3);
         M5Dial.Display.setCursor(x,y);
         M5Dial.Display.println(c);
 }
 void Vayve_Dial::Display_update_structure_GearMode(M5Dial_Display_Upddate_GearMode &Display_Structure){
 
-        switch(Display_Structure.gear_mode_character){
+         switch(Display_Structure.gear_mode_character){
           case 'N':
           case 'n':update_gear_charactor_color(X_COORDINATE_NEUTRAL_MODE_CHAR,Y_COORDINATE_NEUTRAL_MODE_CHAR,'N',RED);
                    update_gear_charactor_color(X_COORDINATE_REV_MODE_CHAR,Y_COORDINATE_REV_MODE_CHAR,'R',WHITE);
-                   update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',WHITE);
-                   update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);
+                  if(Display_Structure.swap_D_S==0){
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',WHITE);
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);
+                  }else{
+                  update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',BLACK);
+                  update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',BLACK);                       
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',WHITE);
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);
+                  }
                    break;
           case 'R':
           case 'r':update_gear_charactor_color(X_COORDINATE_NEUTRAL_MODE_CHAR,Y_COORDINATE_NEUTRAL_MODE_CHAR,'N',WHITE);
@@ -132,39 +139,25 @@ void Vayve_Dial::Display_update_structure_GearMode(M5Dial_Display_Upddate_GearMo
           case 'D':
                    update_gear_charactor_color(X_COORDINATE_NEUTRAL_MODE_CHAR,Y_COORDINATE_NEUTRAL_MODE_CHAR,'N',WHITE);
                    update_gear_charactor_color(X_COORDINATE_REV_MODE_CHAR,Y_COORDINATE_REV_MODE_CHAR,'R',WHITE);
-                   switch(Display_Structure.swap_D_S){
-                    case 0:
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',BLACK);
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',BLACK);                     
-                           update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',RED);
-                           update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',WHITE);                    
-                           break;
-                    case 1:
-                           update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',BLACK);
-                           update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',BLACK);                    
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',WHITE);
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',RED);                   
-                           break;
-                   }          
+                  if(Display_Structure.swap_D_S==0){
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',RED);
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);
+                  }else{
+                  update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',BLACK);
+                  update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',BLACK);                       
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',RED);
+                  update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);
+                  }     
+                  break;    
           case 's':
           case 'S':         
                    update_gear_charactor_color(X_COORDINATE_NEUTRAL_MODE_CHAR,Y_COORDINATE_NEUTRAL_MODE_CHAR,'N',WHITE);
                    update_gear_charactor_color(X_COORDINATE_REV_MODE_CHAR,Y_COORDINATE_REV_MODE_CHAR,'R',WHITE);
-                   switch(Display_Structure.swap_D_S){
-                    case 0:
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',BLACK);
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',BLACK);                                       
-                           update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',WHITE);
-                           update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',RED);                    
-                           break;
-                    case 1:
-                           update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',BLACK);
-                           update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',BLACK);                    
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',RED);
-                           update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',WHITE);                   
-                           break;
-                   }
-                                  
+                   update_gear_charactor_color(X_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,Y_COORDINATE_UNSWAP_DRIVE_MODE_CHAR,'D',BLACK);
+                   update_gear_charactor_color(X_COORDINATE_UNSWAP_SPORT_MODE_CHAR,Y_COORDINATE_UNSWAP_SPORT_MODE_CHAR,'S',BLACK);                                       
+                   update_gear_charactor_color(X_COORDINATE_SWAP_DRIVE_MODE_CHAR,Y_COORDINATE_SWAP_DRIVE_MODE_CHAR,'D',WHITE);
+                   update_gear_charactor_color(X_COORDINATE_SWAP_SPORT_MODE_CHAR,Y_COORDINATE_SWAP_SPORT_MODE_CHAR,'S',RED);                                       
+                   break;           
         }
         remove_cursor_from_prev_position();
         M5Dial.Display.setColor(GREEN);
