@@ -1,5 +1,6 @@
 #include<stdint.h>
 #include<M5Dial.h>
+#include<Wire.h>
 #pragma pack(1)
 enum BUTTON_STATE{
   BUTTON_NOT_PRESSED,

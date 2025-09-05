@@ -4,32 +4,24 @@ static int current=0,previous=0;
 static int state=IGNORE;
 
 ENCODER_DIRECTION Get_Rotary_Enc_Dir(){
-  current=
-  // current=(M5Dial.Encoder.read());
-  // if(current!=previous){
-  //   M5Dial.Speaker.tone(10000, 50);
-  //   if(current>previous){
-  //     if(state!=CLOCK_WISE){
-  //      state= CLOCK_WISE;
-  //      previous=current;
-  //      Serial.println("CW");
-  //     return CLOCK_WISE;
-  //     }
-  //     previous=current;
-  //      return IGNORE;
-  //   }else if(current<previous){
-  //     if(state!=COUNTER_CLOCK_WISE){
-  //      state= COUNTER_CLOCK_WISE;
-  //        previous=current;
-  //         Serial.println("CCW");
-  //     return COUNTER_CLOCK_WISE;
-  //     }
-  //     previous=current;
-  //      return IGNORE;
-  //   }
-  // }
-  // state=IGNORE;
-  // return IGNORE;
+  current=(M5Dial.Encoder.read()/4);
+  if(current!=previous){
+    M5Dial.Speaker.tone(10000, 50);
+    if(current>previous){
+      // if(state!=CLOCK_WISE){
+      //  state= CLOCK_WISE;
+       previous=current;
+      //  Serial.println("CW");
+      return CLOCK_WISE;
+      // }
+      // previous=current;
+      //  return IGNORE;
+    }else if(current<previous){
+         previous=current;
+      return COUNTER_CLOCK_WISE;
+    }
+  }
+  return IGNORE;
 }
 
 void Vayve_Dial::Check_Update_Rotary_Encoder_Values(M5Dial_Display_Upddate_GearMode &Display_Structure_Gear_Mode){
@@ -97,8 +89,6 @@ void Vayve_Dial::Check_Update_Rotary_Encoder_Values(M5Dial_Display_Upddate_GearM
                                               Display_Structure_Gear_Mode.y_cordinate=65;                                               
                                                break;                                                                                                                 
                         }
-                        break;
-            // case ENCODER_DIRECTION::IGNORE: //Serial.println("IGNORE ");
-                                  
+                        break;                                  
     }
 }

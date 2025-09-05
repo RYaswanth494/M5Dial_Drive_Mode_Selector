@@ -4,8 +4,10 @@
 
 
 void Vayve_Dial::Dial_Init(){
-   auto cfg = M5.config();
-    M5Dial.begin(cfg, true, false);
-    Serial.begin(115200);        // Serial Monitor baudrate
+  auto cfg = M5.config();
+  cfg.output_power = true;
+  M5Dial.begin(cfg, true, true);
+   Wire.begin(15, 13, 400000);
+   Serial.begin(115200);
 
 }
