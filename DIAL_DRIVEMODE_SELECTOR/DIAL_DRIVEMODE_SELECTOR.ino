@@ -3,32 +3,32 @@
 Vayve_Dial M5Dial_class;
 #define DEBUG
 #ifdef DEBUG
-void i2c_manual_recover() {
-  pinMode(15, OUTPUT);
-  pinMode(13, INPUT_PULLUP);
 
-  for (int i = 0; i < 9; i++) {
-    digitalWrite(15, HIGH);
-    delayMicroseconds(5);
-    digitalWrite(13, LOW);
-    delayMicroseconds(5);
-  }
-
-  // Re-init Wire
-  Wire.begin(13, 15, 400000);
+uint8_t crc8(uint8_t data) {
+    uint8_t crc = 0x00; // initial value
+    for (uint8_t i = 0; i < 8; i++) {
+        if ((crc ^ data) & 0x80)
+            crc = (crc << 1) ^ 0x07; // polynomial 0x07
+        else
+            crc <<= 1;
+        data <<= 1;
+    }
+    return crc;
 }
+
+
 int prev_Reg = 0, prev_Gear = NEUTRAL_MODE;
 M5Dial_Display_Upddate_Regen Display_Structure_Regen = { 90, 190, 3, 0xffff, 0 };
 M5Dial_Display_Upddate_GearMode Display_Structure_Gear_Mode = { 97, 65, 'N', NEUTRAL_MODE, 2, 0xd841, 0, 0 };
 void I2C_SEND(uint8_t address,char data){
-    Wire.beginTransmission(0x55);
-    Wire.print(data);
+  uint8_t buf[2];
+  buf[0]={data};
+  buf[1]=crc8(data);
+    Wire.beginTransmission(address);
+    Wire.write(buf,2);
+    // Wire.print(crc8(data));
     uint8_t error = Wire.endTransmission(true);
     Serial.printf("endTransmission: %u\n", error);
-    if(error==4){
-      // i2c_manual_recover();
-      // I2C_SEND(address,data);
-    }
 }
 void setup() {
   M5Dial_class.Dial_Init();
@@ -48,7 +48,7 @@ void loop() {
     M5Dial.Speaker.tone(10000, 50);
     M5Dial_class.Display_update_structure_Regen(Display_Structure_Regen);
     M5Dial_class.Display_update_structure_GearMode(Display_Structure_Gear_Mode);
-    I2C_SEND(0x55,Display_Structure_Gear_Mode.gear_mode_character);
+  I2C_SEND(0x55,Display_Structure_Gear_Mode.gear_mode_character);
     prev_Reg = Display_Structure_Regen.regen_mode;
     prev_Gear = Display_Structure_Gear_Mode.gear_mode;
   }

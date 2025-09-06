@@ -2,7 +2,39 @@
 
 static int current=0,previous=0;
 static int state=IGNORE;
+ENCODER_DIRECTION lastState=IGNORE;
 
+
+int lastEncoder = 0;
+ENCODER_DIRECTION currentState = IGNORE;
+unsigned long lastMoveTime = 0;
+const unsigned long debounceDelay = 200; // ms
+
+ENCODER_DIRECTION getEncoderState() {
+  int newEncoder = M5Dial.Encoder.read()/4;
+  unsigned long now = millis();
+
+  if (newEncoder != lastEncoder) {
+    lastMoveTime = now;
+
+    if (currentState == IGNORE) {
+      // First movement after idle → decide direction once
+      currentState = (newEncoder > lastEncoder) ? CLOCK_WISE : COUNTER_CLOCK_WISE;
+      lastEncoder = newEncoder;
+      return currentState;
+    }
+        // Already in RIGHT/LEFT → ignore further ticks
+    lastEncoder = newEncoder;
+    return IGNORE; 
+  }
+    // No movement for debounce time → return to NORMAL
+  if (currentState != IGNORE && (now - lastMoveTime > debounceDelay)) {
+    currentState = IGNORE;
+    return IGNORE;
+  }
+
+  return IGNORE; // idle
+}
 ENCODER_DIRECTION Get_Rotary_Enc_Dir(){
   current=(M5Dial.Encoder.read()/4);
   if(current!=previous){
@@ -25,7 +57,7 @@ ENCODER_DIRECTION Get_Rotary_Enc_Dir(){
 }
 
 void Vayve_Dial::Check_Update_Rotary_Encoder_Values(M5Dial_Display_Upddate_GearMode &Display_Structure_Gear_Mode){
-    uint8_t Direction_check=Get_Rotary_Enc_Dir();
+    uint8_t Direction_check=getEncoderState();//Get_Rotary_Enc_Dir();
     switch(Direction_check){
         case ENCODER_DIRECTION::CLOCK_WISE:switch(Display_Structure_Gear_Mode.gear_mode){
                             case GEAR_MODE::NEUTRAL_MODE:
